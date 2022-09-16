@@ -3,8 +3,7 @@
 
 import numpy as np
 import glob
-import astropy, pylab, scipy, os, sys
-from astropy.table import Table
+import astropy,scipy, os, sys
 import astropy.io.ascii as astro_ascii
 from astropy.io import ascii, fits
 
@@ -196,7 +195,7 @@ def plotalfcorner(obj, pltlabel=['chi2', 'velz', 'sigma', 'zH', 'FeH', 'logage',
     fig1.clf()
     del fig1
 
-    
+
 # ---------------------------------------------------------------- #
 def plotalfcorner_imf(obj, pltlabel=['IMF1', 'IMF2', 'IMF3', 'MLMW_r'],
                       mcmclabels=['IMF1', 'IMF2', 'IMF3',r'$\alpha$']):
@@ -264,14 +263,14 @@ def plothist(in_obj):
 
 # ---------------------------------------------------------------- #
 if __name__ == "__main__":
-    
+
     # ============== lines to update =============== #
     dir_input = '/Users/menggu/alfinput'
     dir_output = '/Users/menggu/alfresults'
     dir_figure = '/Users/menggu/figures/'
     all_sumfile = glob.glob(dir_output + "/ldss3_dr293*n4839*wave6e*_imf1.sum")
     # ================================================ #
-    
+
     all_sumfile = np.unique(all_sumfile)
     print(all_sumfile)
     for i, ifile0 in enumerate(all_sumfile):
@@ -281,16 +280,16 @@ if __name__ == "__main__":
         print(fname, appdx)
         galname = ('').join(fname.split('_')[2:-2])
 
-        tem = ALFbest(respath = dir_output, inpath = dir_input,
+        alfobj = ALFbest(respath = dir_output, inpath = dir_input,
                       fname = fname, appdx=appdx, alfmode = 1, outdir = dir_figure)
-        tem.libcorrect()
-        tem.imfdist()
-        image_name = '{0}/'+galname+'/Spec2_{1}.png'.format(tem.outdir, tem.fullname)
-        image_name = '{0}/Spec2_{1}.png'.format(tem.outdir, tem.fullname)
+        alfobj.libcorrect()
+        alfobj.imfdist()
+        image_name = '{0}/'+galname+'/Spec2_{1}.png'.format(alfobj.outdir, alfobj.fullname)
+        image_name = '{0}/Spec2_{1}.png'.format(alfobj.outdir, alfobj.fullname)
 
         alf_input_header = get_alf_header(dir_input + '/' + fname + '.dat')
 
-        plotalfcorner(tem, 
+        plotalfcorner(alfobj,
                       pltlabel=['velz','sigma','FeH','logage','MgFe','NaFe','aFe','CFe','CaFe', 'MLMW_r','ML_r'],
                       mcmclabels=['velz',r'$\sigma$','FeH','logage','MgFe','NaFe','OFe','CFe','CaFe', r'$\alpha$','M/L'],)
-        plotalfspec(tem, cont_norm = False, alf_input_header = None)
+        plotalfspec(alfobj, cont_norm = False, alf_input_header = None)
