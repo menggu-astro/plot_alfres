@@ -130,9 +130,8 @@ def plotalfspec(obj, cont_norm = False, alf_input_header=None,):
         minx, maxx = ax.get_xlim()
         temidx = (bestwave <= maxx)&(bestwave>= minx)
         temwave = bestwave[temidx]
-        wavewidth = np.nanmean(temwave[1:]-temwave[:-1])
-        print('%.2f' %wavewidth, end=',')
-        sn_ = np.nanmedian(bestflux[temidx]/besterr[temidx])/wavewidth
+        sqrt_wavewidth = np.nanmean(np.sqrt(np.diff(temwave))       
+        sn_ = np.nanmedian(bestflux[temidx]/besterr[temidx])/sqrt_wavewidth
         ax.annotate(r'S/N$_{%.0f-%.0f\AA}=%.0f{\AA^{-1}}$'%(minx, maxx, sn_), fontsize=15, xy=(0.4, 0.05), xycoords ='axes fraction')
 
     label_ = 'MLMW_r'
